@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Resources Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="disclaimer-modal" class="modal">
+        <div class="modal-content">
+            <h2>⚕️ Important Medical Disclaimer</h2>
+            <p>This application provides general medical resources and information only. It does NOT provide medical advice, diagnosis, or treatment.</p>
+            <p><strong>Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</strong></p>
+            <p>If you think you may have a medical emergency, call your doctor, go to the emergency department, or call 911 immediately.</p>
+            <button id="accept-disclaimer" class="btn-primary">I Understand</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>🏥 Medical Resources Guide</h1>
+            <p class="tagline">Your gateway to healthcare information and services</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#insurance">Health Insurance</a></li>
+                <li><a href="#direct-care">Direct Care</a></li>
+                <li><a href="#emergency">Emergency</a></li>
+                <li><a href="#preventive">Preventive Care</a></li>
+                <li><a href="#mental-health">Mental Health</a></li>
+                <li><a href="#prescriptions">Prescriptions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="search-section">
+            <input type="text" id="search-input" placeholder="Search resources..." aria-label="Search resources">
+        </div>
+
+        <section id="insurance" class="resource-section">
+            <h2>Health Insurance Resources</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>Healthcare.gov</h3>
+                    <p>Official health insurance marketplace for comprehensive coverage options.</p>
+                    <a href="https://www.healthcare.gov" class="resource-link" target="_blank">Visit Healthcare.gov →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Medicare</h3>
+                    <p>Federal health insurance for people 65 or older and certain younger people with disabilities.</p>
+                    <a href="https://www.medicare.gov" class="resource-link" target="_blank">Visit Medicare.gov →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Medicaid</h3>
+                    <p>Joint federal and state program providing health coverage to eligible low-income individuals.</p>
+                    <a href="https://www.medicaid.gov" class="resource-link" target="_blank">Visit Medicaid.gov →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>State Health Insurance Assistance</h3>
+                    <p>Free health insurance counseling service for Medicare beneficiaries and their families.</p>
+                    <a href="https://www.shiphelp.org" class="resource-link" target="_blank">Find SHIP Services →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="direct-care" class="resource-section">
+            <h2>Direct Primary Care</h2>
+            <div class="resource-grid">
+                <div class="resource-card featured">
+                    <h3>Boulder Valley Direct Primary Care</h3>
+                    <p>Colorado-based direct primary care practice offering personalized, accessible healthcare without insurance hassles.</p>
+                    <a href="https://www.bouldervalleydpc.com" class="resource-link" target="_blank">Visit Boulder Valley DPC →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>DPC Frontier</h3>
+                    <p>Find direct primary care physicians near you with this comprehensive directory.</p>
+                    <a href="https://www.dpcfrontier.com" class="resource-link" target="_blank">Find DPC Providers →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>What is Direct Primary Care?</h3>
+                    <p>Learn about the DPC model - a healthcare approach that eliminates insurance billing for primary care services.</p>
+                    <a href="https://www.dpcare.org" class="resource-link" target="_blank">Learn About DPC →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="emergency" class="resource-section">
+            <h2>Emergency Resources</h2>
+            <div class="resource-grid">
+                <div class="resource-card emergency-card">
+                    <h3>🚨 Call 911</h3>
+                    <p>For life-threatening emergencies including chest pain, difficulty breathing, severe bleeding, or loss of consciousness.</p>
+                    <span class="emergency-number">Emergency: 911</span>
+                </div>
+                <div class="resource-card">
+                    <h3>Poison Control</h3>
+                    <p>24/7 expert help for poison emergencies and questions about poisons.</p>
+                    <a href="https://www.poison.org" class="resource-link" target="_blank">Visit Poison.org →</a>
+                    <span class="phone-number">1-800-222-1222</span>
+                </div>
+                <div class="resource-card">
+                    <h3>Urgent Care Association</h3>
+                    <p>Find urgent care centers near you for non-emergency medical needs.</p>
+                    <a href="https://www.ucaoa.org" class="resource-link" target="_blank">Find Urgent Care →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>ER or Urgent Care?</h3>
+                    <p>Learn when to visit the emergency room versus urgent care to get appropriate care quickly.</p>
+                    <a href="https://www.cdc.gov/medicalsafety/adult-outpatient.html" class="resource-link" target="_blank">CDC Guidelines →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="preventive" class="resource-section">
+            <h2>Preventive Care</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>CDC Prevention Guidelines</h3>
+                    <p>Evidence-based preventive care guidelines and recommendations from the CDC.</p>
+                    <a href="https://www.cdc.gov/prevention" class="resource-link" target="_blank">Visit CDC Prevention →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Vaccination Schedules</h3>
+                    <p>Recommended immunization schedules for children, adolescents, and adults.</p>
+                    <a href="https://www.cdc.gov/vaccines/schedules" class="resource-link" target="_blank">View Schedules →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Health Screenings</h3>
+                    <p>Learn about recommended health screenings based on age and risk factors.</p>
+                    <a href="https://www.uspreventiveservicestaskforce.org" class="resource-link" target="_blank">USPSTF Guidelines →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>MyHealthfinder</h3>
+                    <p>Get personalized recommendations for screenings, checkups, and preventive care.</p>
+                    <a href="https://health.gov/myhealthfinder" class="resource-link" target="_blank">Get Recommendations →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="mental-health" class="resource-section">
+            <h2>Mental Health Resources</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>SAMHSA National Helpline</h3>
+                    <p>Free, confidential, 24/7 treatment referral and information service for mental health and substance use disorders.</p>
+                    <a href="https://www.samhsa.gov/find-help/national-helpline" class="resource-link" target="_blank">Visit SAMHSA →</a>
+                    <span class="phone-number">1-800-662-4357</span>
+                </div>
+                <div class="resource-card">
+                    <h3>Crisis Text Line</h3>
+                    <p>Free, 24/7 support for those in crisis. Text with a trained crisis counselor.</p>
+                    <a href="https://www.crisistextline.org" class="resource-link" target="_blank">Visit Crisis Text Line →</a>
+                    <span class="phone-number">Text HOME to 741741</span>
+                </div>
+                <div class="resource-card">
+                    <h3>988 Suicide & Crisis Lifeline</h3>
+                    <p>24/7 free and confidential support for people in distress and crisis resources.</p>
+                    <a href="https://988lifeline.org" class="resource-link" target="_blank">Visit 988 Lifeline →</a>
+                    <span class="phone-number">Call or text 988</span>
+                </div>
+                <div class="resource-card">
+                    <h3>Psychology Today</h3>
+                    <p>Find therapists, psychiatrists, support groups, and treatment facilities near you.</p>
+                    <a href="https://www.psychologytoday.com" class="resource-link" target="_blank">Find Providers →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="prescriptions" class="resource-section">
+            <h2>Prescription Assistance</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>GoodRx</h3>
+                    <p>Compare prescription drug prices and find coupons at over 70,000 US pharmacies.</p>
+                    <a href="https://www.goodrx.com" class="resource-link" target="_blank">Visit GoodRx →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>NeedyMeds</h3>
+                    <p>Information on patient assistance programs, free/low-cost clinics, and drug discount cards.</p>
+                    <a href="https://www.needymeds.org" class="resource-link" target="_blank">Visit NeedyMeds →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>RxAssist</h3>
+                    <p>Comprehensive database of patient assistance programs run by pharmaceutical companies.</p>
+                    <a href="https://www.rxassist.org" class="resource-link" target="_blank">Visit RxAssist →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Medicare Extra Help</h3>
+                    <p>Program to help people with limited income pay Medicare prescription drug costs.</p>
+                    <a href="https://www.ssa.gov/medicare/part-d-extra-help" class="resource-link" target="_blank">Learn About Extra Help →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="disclaimer-section">
+            <h2>Remember</h2>
+            <p>This application is for informational purposes only and does not provide medical advice. Always consult with qualified healthcare professionals for medical concerns.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Medical Resources Guide | Not a substitute for professional medical advice</p>
+        </div>
+    </footer>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
