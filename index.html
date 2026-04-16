@@ -830,7 +830,165 @@
       <div class="disclaimer">
         <strong>⚠️ Educational use only.</strong> These calculators are general screening tools. They do not diagnose conditions or replace professional medical evaluation.
       </div>
-      <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Health calculators land in the next phase.</p>
+
+      <!-- BMI -->
+      <div class="calc" id="calc-bmi">
+        <h3><span>⚖️</span> BMI Calculator</h3>
+        <div class="field-group">
+          <div class="field">
+            <label>Height unit</label>
+            <div class="toggle-group" role="group" aria-label="Height unit">
+              <button type="button" data-height-unit="imperial" aria-pressed="true">ft / in</button>
+              <button type="button" data-height-unit="metric"   aria-pressed="false">cm</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Weight unit</label>
+            <div class="toggle-group" role="group" aria-label="Weight unit">
+              <button type="button" data-weight-unit="imperial" aria-pressed="true">lb</button>
+              <button type="button" data-weight-unit="metric"   aria-pressed="false">kg</button>
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field" data-height-imperial>
+            <label for="bmi-ft">Height (ft)</label>
+            <input id="bmi-ft" type="number" min="0" max="9" step="1" value="5" inputmode="numeric">
+          </div>
+          <div class="field" data-height-imperial>
+            <label for="bmi-in">Height (in)</label>
+            <input id="bmi-in" type="number" min="0" max="11" step="1" value="8" inputmode="numeric">
+          </div>
+          <div class="field" data-height-metric hidden>
+            <label for="bmi-cm">Height (cm)</label>
+            <input id="bmi-cm" type="number" min="0" step="1" value="173" inputmode="numeric">
+          </div>
+          <div class="field" data-weight-imperial>
+            <label for="bmi-lb">Weight (lb)</label>
+            <input id="bmi-lb" type="number" min="0" step="1" value="160" inputmode="numeric">
+          </div>
+          <div class="field" data-weight-metric hidden>
+            <label for="bmi-kg">Weight (kg)</label>
+            <input id="bmi-kg" type="number" min="0" step="0.1" value="73" inputmode="decimal">
+          </div>
+        </div>
+
+        <div class="result">
+          <div class="result-value" id="bmi-value">—</div>
+          <div class="result-label" id="bmi-category">Enter height and weight</div>
+          <div class="spectrum" aria-hidden="true">
+            <div style="background:#6fc2e6">Under</div>
+            <div style="background:#7dd181">Normal</div>
+            <div style="background:#f4a261">Over</div>
+            <div style="background:#e76f51">Obese</div>
+            <div class="spectrum-marker" id="bmi-marker" style="left: 0%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-muted);margin-top:0.2rem;font-variant-numeric:tabular-nums;">
+            <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+          </div>
+        </div>
+        <div class="mini-disclaimer">BMI is a screening tool, not a diagnostic measure. It does not account for muscle mass, bone density, or body composition. Source: WHO adult BMI categories.</div>
+      </div>
+
+      <!-- Water -->
+      <div class="calc" id="calc-water">
+        <h3><span>💧</span> Water Intake Calculator</h3>
+        <div class="field-group">
+          <div class="field">
+            <label>Weight unit</label>
+            <div class="toggle-group" role="group" aria-label="Weight unit">
+              <button type="button" data-water-unit="imperial" aria-pressed="true">lb</button>
+              <button type="button" data-water-unit="metric"   aria-pressed="false">kg</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="water-weight">Body weight</label>
+            <input id="water-weight" type="number" min="0" step="1" value="160" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="water-activity">Activity level</label>
+            <select id="water-activity">
+              <option value="1.0">Sedentary</option>
+              <option value="1.1" selected>Moderate</option>
+              <option value="1.2">Active</option>
+              <option value="1.35">Very active</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="water-climate">Climate</label>
+            <select id="water-climate">
+              <option value="1.0" selected>Temperate</option>
+              <option value="1.1">Hot</option>
+              <option value="1.1">Dry</option>
+              <option value="1.2">Hot + dry</option>
+            </select>
+          </div>
+        </div>
+        <div class="result">
+          <div class="result-value"><span id="water-oz">—</span> oz</div>
+          <div class="result-label"><span id="water-liters">—</span> L · <span id="water-cups">—</span> cups (8 oz)</div>
+          <div class="mini-disclaimer" style="margin-top:0.75rem;background:transparent;border:none;padding:0;">
+            <strong style="color:var(--text-dim);">Formula:</strong>
+            <span id="water-math">½ × body weight (oz) × activity × climate</span>
+          </div>
+        </div>
+        <div class="mini-disclaimer">Starting point, not a prescription. People with kidney, heart, or liver conditions should follow their provider's fluid guidance.</div>
+      </div>
+
+      <!-- Heart Rate -->
+      <div class="calc" id="calc-hr">
+        <h3><span>❤️</span> Heart Rate Zones</h3>
+        <div class="field-group">
+          <div class="field">
+            <label for="hr-age">Age</label>
+            <input id="hr-age" type="number" min="1" max="120" step="1" value="35" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="hr-rest">Resting HR (optional, for Karvonen)</label>
+            <input id="hr-rest" type="number" min="0" max="150" step="1" placeholder="e.g., 60" inputmode="numeric">
+          </div>
+        </div>
+        <div class="result">
+          <div class="result-value"><span id="hr-max">—</span> bpm</div>
+          <div class="result-label">Estimated max heart rate · Formula: <span id="hr-formula">220 − age</span></div>
+          <div id="hr-zones" style="margin-top:0.85rem;"></div>
+        </div>
+        <div class="mini-disclaimer">Estimates only. Actual max HR varies by individual; a clinical stress test is the gold standard. Karvonen method uses heart-rate reserve (max − rest) when a resting HR is provided.</div>
+      </div>
+
+      <!-- Sleep -->
+      <div class="calc" id="calc-sleep">
+        <h3><span>🌙</span> Sleep Calculator</h3>
+        <div class="field-group">
+          <div class="field">
+            <label>Mode</label>
+            <div class="toggle-group" role="group" aria-label="Sleep mode">
+              <button type="button" data-sleep-mode="wake" aria-pressed="true">I wake at…</button>
+              <button type="button" data-sleep-mode="bed"  aria-pressed="false">I go to bed at…</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="sleep-time">Time</label>
+            <input id="sleep-time" type="time" value="07:00">
+          </div>
+        </div>
+        <h4 style="margin:0.5rem 0 0.25rem;font-size:0.92rem;color:var(--text-dim);font-weight:500;" id="sleep-heading">To wake feeling rested, consider:</h4>
+        <div class="sleep-options" id="sleep-options"></div>
+        <div class="mini-disclaimer">Based on 90-minute sleep cycles. 5–6 complete cycles (7.5–9 hours) is typical for adults. Adds 15 minutes to fall asleep.</div>
+      </div>
+
+      <!-- Medications -->
+      <div class="calc" id="calc-meds">
+        <h3><span>💊</span> Medication Schedule Helper</h3>
+        <div id="med-rows"></div>
+        <div class="btn-row">
+          <button type="button" class="btn-ghost btn" id="med-add">+ Add another</button>
+          <button type="button" class="btn-ghost btn" id="med-copy">Copy schedule</button>
+          <button type="button" class="btn-ghost btn" id="med-clear">Clear</button>
+        </div>
+        <div class="med-schedule-out" id="med-out" aria-live="polite">Add at least one medication to see the schedule.</div>
+        <div class="mini-disclaimer">This is a scheduling helper only. Always follow your prescriber's directions and pharmacist's counseling for dosing, timing, interactions, and food requirements.</div>
+      </div>
     </section>
 
     <!-- ============ REFERENCE ============ -->
@@ -869,6 +1027,338 @@
       tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
       const hash = (location.hash || '').replace('#', '');
       if (['resources', 'calculators', 'reference', 'wellness'].includes(hash)) activate(hash);
+    })();
+
+    // ---------- Helpers ----------
+    const $  = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    function bindToggleGroup(groupEl, onChange) {
+      const buttons = $$('button', groupEl);
+      buttons.forEach(b => b.addEventListener('click', () => {
+        buttons.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+        onChange(b);
+      }));
+    }
+
+    function pressedValue(groupEl, attr) {
+      const pressed = $('button[aria-pressed="true"]', groupEl);
+      return pressed ? pressed.getAttribute(attr) : null;
+    }
+
+    function fmt(n, d = 1) {
+      if (!isFinite(n)) return '—';
+      return Number(n.toFixed(d)).toString();
+    }
+
+    function formatTime12(hours24, minutes) {
+      const h = ((hours24 % 24) + 24) % 24;
+      const m = ((minutes % 60) + 60) % 60;
+      const suffix = h < 12 ? 'AM' : 'PM';
+      const hr12 = h % 12 === 0 ? 12 : h % 12;
+      return hr12 + ':' + String(m).padStart(2, '0') + ' ' + suffix;
+    }
+
+    function parseTime(str) {
+      const [h, m] = (str || '00:00').split(':').map(Number);
+      return { h: h || 0, m: m || 0 };
+    }
+
+    // ---------- BMI ----------
+    (function () {
+      const root = $('#calc-bmi');
+      if (!root) return;
+      const heightGroup = $('[role="group"][aria-label="Height unit"]', root);
+      const weightGroup = $('[role="group"][aria-label="Weight unit"]', root);
+      const heightImperial = $$('[data-height-imperial]', root);
+      const heightMetric   = $$('[data-height-metric]', root);
+      const weightImperial = $$('[data-weight-imperial]', root);
+      const weightMetric   = $$('[data-weight-metric]', root);
+      const valueEl    = $('#bmi-value');
+      const categoryEl = $('#bmi-category');
+      const markerEl   = $('#bmi-marker');
+
+      function recalc() {
+        const heightUnit = pressedValue(heightGroup, 'data-height-unit');
+        const weightUnit = pressedValue(weightGroup, 'data-weight-unit');
+        let meters, kg;
+        if (heightUnit === 'imperial') {
+          const ft = Number($('#bmi-ft', root).value) || 0;
+          const inch = Number($('#bmi-in', root).value) || 0;
+          meters = (ft * 12 + inch) * 0.0254;
+        } else {
+          meters = (Number($('#bmi-cm', root).value) || 0) / 100;
+        }
+        if (weightUnit === 'imperial') {
+          kg = (Number($('#bmi-lb', root).value) || 0) * 0.453592;
+        } else {
+          kg = Number($('#bmi-kg', root).value) || 0;
+        }
+        if (!meters || !kg) {
+          valueEl.textContent = '—';
+          categoryEl.textContent = 'Enter height and weight';
+          markerEl.style.left = '0%';
+          return;
+        }
+        const bmi = kg / (meters * meters);
+        valueEl.textContent = fmt(bmi, 1);
+
+        let cat, color;
+        if (bmi < 18.5)      { cat = 'Underweight'; color = '#6fc2e6'; }
+        else if (bmi < 25)   { cat = 'Normal weight'; color = '#7dd181'; }
+        else if (bmi < 30)   { cat = 'Overweight'; color = '#f4a261'; }
+        else                 { cat = 'Obese'; color = '#e76f51'; }
+        categoryEl.innerHTML = 'BMI category: <span style="color:' + color + ';font-weight:600;">' + cat + '</span>';
+
+        const clamped = Math.max(15, Math.min(40, bmi));
+        const pct = ((clamped - 15) / 25) * 100;
+        markerEl.style.left = pct + '%';
+      }
+
+      bindToggleGroup(heightGroup, (btn) => {
+        const isImperial = btn.getAttribute('data-height-unit') === 'imperial';
+        heightImperial.forEach(el => el.hidden = !isImperial);
+        heightMetric.forEach(el   => el.hidden = isImperial);
+        recalc();
+      });
+      bindToggleGroup(weightGroup, (btn) => {
+        const isImperial = btn.getAttribute('data-weight-unit') === 'imperial';
+        weightImperial.forEach(el => el.hidden = !isImperial);
+        weightMetric.forEach(el   => el.hidden = isImperial);
+        recalc();
+      });
+      $$('input', root).forEach(i => i.addEventListener('input', recalc));
+      recalc();
+    })();
+
+    // ---------- Water ----------
+    (function () {
+      const root = $('#calc-water');
+      if (!root) return;
+      const unitGroup = $('.toggle-group[aria-label="Weight unit"]', root);
+      const weightIn  = $('#water-weight');
+      const activity  = $('#water-activity');
+      const climate   = $('#water-climate');
+      const ozEl      = $('#water-oz');
+      const lEl       = $('#water-liters');
+      const cupsEl    = $('#water-cups');
+      const mathEl    = $('#water-math');
+
+      function recalc() {
+        const unit = pressedValue(unitGroup, 'data-water-unit');
+        const w = Number(weightIn.value) || 0;
+        const lbs = unit === 'imperial' ? w : w * 2.20462;
+        const act = Number(activity.value) || 1.0;
+        const clim = Number(climate.value) || 1.0;
+        const baseOz = lbs / 2;
+        const oz = baseOz * act * clim;
+        if (!w) {
+          ozEl.textContent = '—'; lEl.textContent = '—'; cupsEl.textContent = '—';
+          return;
+        }
+        ozEl.textContent   = fmt(oz, 0);
+        lEl.textContent    = fmt(oz * 0.0295735, 1);
+        cupsEl.textContent = fmt(oz / 8, 1);
+
+        const w2 = fmt(lbs, 0);
+        mathEl.textContent = '½ × ' + w2 + ' lb × ' + act + ' (activity) × ' + clim + ' (climate) = ' + fmt(oz, 0) + ' oz';
+      }
+
+      bindToggleGroup(unitGroup, recalc);
+      [weightIn, activity, climate].forEach(i => i.addEventListener('input', recalc));
+      recalc();
+    })();
+
+    // ---------- Heart rate zones ----------
+    (function () {
+      const root = $('#calc-hr');
+      if (!root) return;
+      const ageIn  = $('#hr-age');
+      const restIn = $('#hr-rest');
+      const maxEl  = $('#hr-max');
+      const fmtEl  = $('#hr-formula');
+      const zonesEl = $('#hr-zones');
+
+      const zones = [
+        { label: 'Recovery',  low: 0.50, high: 0.60, color: '#6fc2e6' },
+        { label: 'Fat burn',  low: 0.60, high: 0.70, color: '#7dd181' },
+        { label: 'Aerobic',   low: 0.70, high: 0.80, color: '#f4c790' },
+        { label: 'Anaerobic', low: 0.80, high: 0.90, color: '#f4a261' },
+        { label: 'Max',       low: 0.90, high: 1.00, color: '#e76f51' },
+      ];
+
+      function recalc() {
+        const age = Number(ageIn.value) || 0;
+        const rest = Number(restIn.value) || 0;
+        if (!age || age > 120) {
+          maxEl.textContent = '—';
+          zonesEl.innerHTML = '';
+          return;
+        }
+        const hrMax = 220 - age;
+        maxEl.textContent = hrMax;
+        const karvonen = rest > 0 && rest < hrMax;
+        fmtEl.textContent = karvonen
+          ? 'Karvonen — target = ((max − rest) × %) + rest'
+          : '220 − age';
+
+        zonesEl.innerHTML = zones.map(z => {
+          let low, high;
+          if (karvonen) {
+            low  = Math.round((hrMax - rest) * z.low  + rest);
+            high = Math.round((hrMax - rest) * z.high + rest);
+          } else {
+            low  = Math.round(hrMax * z.low);
+            high = Math.round(hrMax * z.high);
+          }
+          const pct = Math.round(z.low * 100) + '–' + Math.round(z.high * 100) + '%';
+          return '<div class="zone-bar" style="background:' + z.color + '"><span class="zone-label">' + z.label + '</span><span>' + pct + '</span><span class="zone-range">' + low + '–' + high + ' bpm</span></div>';
+        }).join('');
+      }
+
+      [ageIn, restIn].forEach(i => i.addEventListener('input', recalc));
+      recalc();
+    })();
+
+    // ---------- Sleep calculator ----------
+    (function () {
+      const root = $('#calc-sleep');
+      if (!root) return;
+      const modeGroup = $('.toggle-group', root);
+      const timeIn    = $('#sleep-time');
+      const heading   = $('#sleep-heading');
+      const out       = $('#sleep-options');
+      const FALL_ASLEEP = 15; // minutes
+
+      function recalc() {
+        const mode = pressedValue(modeGroup, 'data-sleep-mode') || 'wake';
+        const { h, m } = parseTime(timeIn.value);
+        const target = h * 60 + m;
+        const cyclesList = [6, 5, 4, 3]; // cycles
+        const options = cyclesList.map(cycles => {
+          const totalMinutes = cycles * 90 + FALL_ASLEEP;
+          let mins;
+          if (mode === 'wake') {
+            mins = target - totalMinutes;
+          } else {
+            mins = target + totalMinutes;
+          }
+          const hh = Math.floor(((mins / 60) % 24 + 24) % 24);
+          const mm = ((mins % 60) + 60) % 60;
+          const hrs = (cycles * 1.5).toFixed(1).replace(/\.0$/, '');
+          return { cycles, time: formatTime12(hh, mm), hrs };
+        });
+
+        heading.textContent = mode === 'wake'
+          ? 'To wake feeling rested at ' + formatTime12(h, m) + ', go to bed at:'
+          : 'If you go to bed at ' + formatTime12(h, m) + ', wake at:';
+
+        out.innerHTML = options.map(o => {
+          const rec = (o.cycles === 5 || o.cycles === 6) ? ' recommended' : '';
+          return '<div class="sleep-option' + rec + '"><div class="time">' + o.time + '</div><div class="cycles">' + o.cycles + ' cycles · ' + o.hrs + ' h</div></div>';
+        }).join('');
+      }
+
+      bindToggleGroup(modeGroup, recalc);
+      timeIn.addEventListener('input', recalc);
+      recalc();
+    })();
+
+    // ---------- Medication schedule ----------
+    (function () {
+      const root = $('#calc-meds');
+      if (!root) return;
+      const rowsEl = $('#med-rows');
+      const out    = $('#med-out');
+      const addBtn = $('#med-add');
+      const copyBtn = $('#med-copy');
+      const clearBtn = $('#med-clear');
+
+      const FREQ = {
+        '1x':        { label: 'Once daily',   times: 1, interval: null },
+        '2x':        { label: 'Twice daily',  times: 2, interval: 12 },
+        '3x':        { label: '3× daily',     times: 3, interval: 8 },
+        'q8h':       { label: 'Every 8 hours', times: 3, interval: 8 },
+        'q12h':      { label: 'Every 12 hours', times: 2, interval: 12 },
+        'weekly':    { label: 'Once weekly',  times: 1, interval: null, weekly: true },
+      };
+
+      function addRow(prefill = {}) {
+        const idx = Date.now() + Math.random().toString(36).slice(2, 6);
+        const row = document.createElement('div');
+        row.className = 'med-row';
+        row.dataset.id = idx;
+        row.innerHTML =
+          '<div class="field"><label>Medication</label><input type="text" data-med-name placeholder="e.g., Lisinopril 10mg" value="' + (prefill.name || '') + '"></div>' +
+          '<div class="field"><label>Frequency</label><select data-med-freq>' +
+            Object.entries(FREQ).map(([k, v]) => '<option value="' + k + '"' + (prefill.freq === k ? ' selected' : '') + '>' + v.label + '</option>').join('') +
+          '</select></div>' +
+          '<div class="field"><label>Start time</label><input type="time" data-med-start value="' + (prefill.start || '08:00') + '"></div>' +
+          '<button type="button" class="btn-ghost btn" data-med-remove aria-label="Remove medication">×</button>';
+        rowsEl.appendChild(row);
+        row.addEventListener('input', recalc);
+        $('[data-med-remove]', row).addEventListener('click', () => { row.remove(); recalc(); });
+        recalc();
+      }
+
+      function scheduleFor(name, freqKey, startStr) {
+        const f = FREQ[freqKey]; if (!f) return [];
+        const { h, m } = parseTime(startStr);
+        const times = [];
+        if (f.weekly) {
+          times.push(formatTime12(h, m) + ' (weekly)');
+        } else {
+          for (let i = 0; i < f.times; i++) {
+            const totalMin = (h * 60 + m) + i * (f.interval || 24) * 60;
+            const hh = Math.floor(totalMin / 60) % 24;
+            const mm = totalMin % 60;
+            times.push(formatTime12(hh, mm));
+          }
+        }
+        return times;
+      }
+
+      function recalc() {
+        const rows = $$('.med-row', rowsEl);
+        if (!rows.length) {
+          out.textContent = 'Add at least one medication to see the schedule.';
+          return;
+        }
+        const lines = [];
+        rows.forEach(r => {
+          const name = $('[data-med-name]', r).value.trim();
+          const freq = $('[data-med-freq]', r).value;
+          const start = $('[data-med-start]', r).value;
+          if (!name) return;
+          const times = scheduleFor(name, freq, start);
+          lines.push('💊 ' + name);
+          lines.push('   ' + FREQ[freq].label + ' — ' + times.join(', '));
+          lines.push('');
+        });
+        out.textContent = lines.length ? lines.join('\n').trimEnd() : 'Add a medication name to see the schedule.';
+      }
+
+      addBtn.addEventListener('click', () => addRow());
+      clearBtn.addEventListener('click', () => { rowsEl.innerHTML = ''; addRow(); });
+      copyBtn.addEventListener('click', async () => {
+        const text = out.textContent;
+        if (!text || text.startsWith('Add')) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = copyBtn.textContent;
+          copyBtn.textContent = 'Copied ✓';
+          setTimeout(() => (copyBtn.textContent = original), 1500);
+        } catch (_) {
+          // Fallback: create a temp textarea
+          const ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch (_) {}
+          ta.remove();
+        }
+      });
+
+      // Seed with one row
+      addRow({ name: '', freq: '1x', start: '08:00' });
     })();
   </script>
 </body>
