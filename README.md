@@ -1,53 +1,66 @@
-# Medical Resources Guide
+# Doctor
 
-A desktop application providing easy access to healthcare resources and information, built with Electron and vanilla JavaScript.
+Healthcare resources, calculators, reference guides, and wellness tools — everything packed into a single `index.html` with no build step, no dependencies, and no network calls beyond the external links you choose to follow.
+
+**Live demo:** https://guildmasterdev.github.io/Doctor
+
+> ⚠️ **This app provides general health information only. It is not medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.**
 
 ## Features
 
-- **Healthcare Resources** - Direct links to health insurance marketplaces, Medicare, and Medicaid
-- **Direct Primary Care** - Information about DPC practices including Boulder Valley DPC in Colorado
-- **Emergency Resources** - Quick access to emergency numbers and urgent care information
-- **Preventive Care** - CDC guidelines, vaccination schedules, and health screenings
-- **Mental Health** - Crisis hotlines, SAMHSA resources, and support services
-- **Prescription Assistance** - Drug discount programs and patient assistance resources
-- **Search Functionality** - Filter resources by keyword
-- **Safe External Links** - All links open in your default browser
-- **Medical Disclaimer** - Clear notice that this app does not provide medical advice
+- **Resources** — curated, real external links for insurance & coverage, Direct Primary Care, emergency services, preventive care, mental health, and prescription assistance. Emergency numbers are `tel:` links on mobile.
+- **Calculators** — BMI (WHO categories with a visual spectrum), water intake (activity and climate adjustments), heart-rate zones (max HR, optional Karvonen), sleep cycles (bedtime or wake-time), and a medication schedule helper.
+- **Reference** — adult vital-sign ranges, USPSTF screening schedule by age, CDC adult vaccination schedule, common lab reference ranges (CBC / metabolic / lipids / A1C / TSH), step-by-step first-aid guides (CPR, choking, bleeding, burns, fractures, anaphylaxis), and a plain-language health-insurance glossary.
+- **Wellness** — appointment-prep checklist (print / copy), symptom journal (localStorage-only, CSV export, per-entry delete), 4-7-8 breathing exercise with animated circle.
+- **Runs anywhere** — vanilla HTML/CSS/JS with no dependencies. Open locally, host as a static site, install as a PWA, or wrap with Electron.
+- **Offline-capable** — cache-first service worker once visited on the web.
 
-## Installation
+## Run in the browser
+
+Clone the repo and open `index.html` in any modern browser, or visit the live demo at https://guildmasterdev.github.io/Doctor.
+
+## Install as a PWA
+
+On mobile or a Chromium browser, visit the live demo and use "Install app" / "Add to Home Screen". Works offline after first load.
+
+## Run as a desktop app (Electron)
 
 ```bash
-# Clone the repository
 git clone https://github.com/GuildMasterDev/Doctor.git
 cd Doctor
-
-# Install dependencies
 npm install
+npm start
 ```
 
-## Usage
+To build installers:
 
 ```bash
-# Run the application
-npm start
-
-# Run with debug logging
-npm run dev
+npm run dist         # builds for your current platform
+npm run dist:mac     # mac DMG + zip
+npm run dist:win     # win NSIS + portable
+npm run dist:linux   # linux AppImage + deb
 ```
 
-## Important Disclaimer
+## Important disclaimer
 
-This application provides general medical resources and information only. It does NOT provide medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions regarding medical conditions.
+Doctor is an educational reference. It does **not** diagnose, treat, or replace professional medical, psychiatric, or therapeutic care. Calculators are general screening tools — the values they produce do not account for your full clinical picture. Reference ranges vary by laboratory and by individual.
 
-## Technologies
+- **Emergency?** Call 911 (US) or your local emergency number.
+- **Mental-health crisis?** Call or text 988 (Suicide & Crisis Lifeline, US).
+- **Poisoning?** Call 1-800-222-1222 (US Poison Control).
 
-- **Electron** - Cross-platform desktop application framework
-- **HTML/CSS/JavaScript** - Vanilla web technologies
-- **Node.js** - JavaScript runtime
+Doctor is **not a medical device**. No patient data is transmitted — everything (including symptom-journal entries) stays in your browser's local storage until you export or clear it.
+
+## Technology
+
+- Single `index.html` with all CSS and JS inline (no bundler)
+- Zero runtime dependencies
+- Service worker (`sw.js`) for offline PWA support
+- Electron 41.x + electron-builder for desktop distribution
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) file for details
+[MIT](LICENSE) — open source.
 
 ## Author
 

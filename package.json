@@ -1,6 +1,6 @@
 {
   "name": "doctor",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Doctor — healthcare resources, calculators, reference guides, and wellness tools. Single index.html, vanilla JS, no dependencies. Runs in any browser, as a PWA, or as an Electron desktop app.",
   "main": "main.js",
   "homepage": "https://guildmasterdev.github.io/Doctor",
