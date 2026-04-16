@@ -1,214 +1,875 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Resources Guide</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#4ecdc4">
+  <meta name="description" content="Doctor — healthcare resources, calculators, and wellness tools. Educational use only.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Doctor">
+  <title>Doctor — Healthcare Resources & Wellness Tools</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-elev: #14141c;
+      --bg-elev-2: #1b1b26;
+      --border: #2a2a38;
+      --border-strong: #3a3a4e;
+      --text: #e8e8f0;
+      --text-dim: #a0a0b0;
+      --text-muted: #6a6a7a;
+      --accent: #4ecdc4;
+      --accent-dim: #3ba99f;
+      --accent-soft: rgba(78, 205, 196, 0.12);
+      --accent-softer: rgba(78, 205, 196, 0.05);
+      --warn: #f4a261;
+      --warn-bg: rgba(244, 162, 97, 0.1);
+      --danger: #e76f51;
+      --danger-bg: rgba(231, 111, 81, 0.12);
+      --good: #7dd181;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    a:hover { color: var(--accent-dim); text-decoration: underline; }
+
+    button { font-family: inherit; cursor: pointer; }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem;
+    }
+
+    /* ---------- Header ---------- */
+    header.site-header {
+      padding: 2.5rem 0 1.25rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    h1.title {
+      margin: 0;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    h1.title .ico { color: var(--accent); }
+    .subtitle {
+      margin: 0.4rem 0 0;
+      color: var(--text-dim);
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+    }
+
+    /* ---------- Disclaimer banner ---------- */
+    .disclaimer {
+      margin: 1.25rem 0;
+      padding: 0.85rem 1rem;
+      background: var(--warn-bg);
+      border: 1px solid rgba(244, 162, 97, 0.35);
+      border-left: 3px solid var(--warn);
+      border-radius: var(--radius-sm);
+      color: #f4c790;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .disclaimer strong { color: var(--warn); }
+
+    .mini-disclaimer {
+      margin-top: 1rem;
+      padding: 0.6rem 0.85rem;
+      background: var(--accent-softer);
+      border-left: 2px solid var(--accent);
+      border-radius: 6px;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-style: italic;
+    }
+
+    /* ---------- Navigation tabs ---------- */
+    nav.tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin: 1.25rem 0 1.5rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    nav.tabs::-webkit-scrollbar { display: none; }
+    nav.tabs button {
+      flex: 1 0 auto;
+      min-width: max-content;
+      padding: 0.75rem 1.1rem;
+      background: transparent;
+      color: var(--text-dim);
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    nav.tabs button:hover { color: var(--text); }
+    nav.tabs button[aria-selected="true"] {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ---------- Tab panels ---------- */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    h2.section-title {
+      margin: 2rem 0 1rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    h2.section-title:first-of-type { margin-top: 0.25rem; }
+    h2.section-title .ico { font-size: 1.25rem; }
+
+    h3.sub-title {
+      margin: 1.5rem 0 0.5rem;
+      font-size: 1.05rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ---------- Resource cards ---------- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.9rem;
+    }
+    .card {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.15rem 1rem;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-dim);
+      background: var(--bg-elev-2);
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.5rem;
+    }
+    .card-ico { font-size: 1.35rem; line-height: 1; }
+    .card-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .card-desc {
+      margin: 0 0 0.85rem;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      flex-grow: 1;
+    }
+    .card-link {
+      font-size: 0.88rem;
+      font-weight: 500;
+      align-self: flex-start;
+    }
+
+    /* ---------- Forms / inputs ---------- */
+    .calc {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .calc h3 {
+      margin: 0 0 0.85rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .field-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+    .field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .field label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .field input[type="number"],
+    .field input[type="text"],
+    .field input[type="time"],
+    .field select,
+    .field textarea {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 0.55rem 0.7rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .field input[type="range"] { accent-color: var(--accent); width: 100%; }
+
+    .toggle-group {
+      display: inline-flex;
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+      align-self: flex-start;
+    }
+    .toggle-group button {
+      background: transparent;
+      color: var(--text-dim);
+      border: none;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+    .toggle-group button[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 6px;
+      padding: 0.55rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:hover { background: var(--accent-dim); }
+    .btn:active { transform: scale(0.98); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-ghost:hover { background: var(--accent-soft); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #d1573a; }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+    }
+
+    .result {
+      margin-top: 0.85rem;
+      padding: 1rem;
+      background: var(--accent-softer);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+    }
+    .result-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .result-label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 0.25rem;
+    }
+
+    /* ---------- Tables ---------- */
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1.25rem;
+    }
+    table.ref {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    table.ref th, table.ref td {
+      padding: 0.7rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    table.ref th {
+      background: var(--bg-elev-2);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    table.ref tr:last-child td { border-bottom: none; }
+    table.ref tr:hover td { background: var(--accent-softer); }
+
+    /* ---------- BMI spectrum ---------- */
+    .spectrum {
+      display: flex;
+      height: 28px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 0.75rem 0 0.35rem;
+      border: 1px solid var(--border-strong);
+      position: relative;
+    }
+    .spectrum > div {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: rgba(0,0,0,0.75);
+      font-weight: 700;
+    }
+    .spectrum-marker {
+      position: absolute;
+      top: -5px;
+      bottom: -5px;
+      width: 3px;
+      background: var(--text);
+      box-shadow: 0 0 0 2px var(--bg);
+      transition: left 0.35s ease;
+      pointer-events: none;
+    }
+
+    /* ---------- HR zones ---------- */
+    .zone-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 6px;
+      margin-bottom: 0.4rem;
+      color: #0a0a0f;
+      font-weight: 500;
+      font-size: 0.88rem;
+    }
+    .zone-label { flex: 0 0 auto; font-weight: 700; }
+    .zone-range {
+      margin-left: auto;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+
+    /* ---------- First aid steps ---------- */
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .steps li {
+      counter-increment: step;
+      padding: 0.75rem 0 0.75rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .steps li:last-child { border-bottom: none; }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0.75rem;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    /* ---------- Misc ---------- */
+    .emergency-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--danger-bg);
+      border: 1px solid var(--danger);
+      color: #ffb09c;
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    .emergency-call:hover { background: rgba(231, 111, 81, 0.25); text-decoration: none; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 720px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ---------- Breathing circle ---------- */
+    .breath-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0;
+    }
+    .breath-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent), var(--accent-dim));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: transform 1s ease, background 1s ease;
+      box-shadow: 0 0 60px rgba(78, 205, 196, 0.35);
+    }
+    .breath-stats {
+      display: flex;
+      gap: 2.25rem;
+      margin-top: 1.5rem;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .breath-stats > div strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.35rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- Journal ---------- */
+    .journal-list {
+      max-height: 360px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+    }
+    .journal-entry {
+      padding: 0.75rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .journal-entry:last-child { border-bottom: none; }
+    .journal-entry .meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .journal-entry .sev {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      margin-left: 0.5rem;
+    }
+    .sev-low  { background: rgba(125, 209, 129, 0.2); color: var(--good); }
+    .sev-mid  { background: rgba(244, 162, 97, 0.2); color: var(--warn); }
+    .sev-high { background: rgba(231, 111, 81, 0.2); color: var(--danger); }
+
+    /* ---------- Checklist ---------- */
+    .checklist-item {
+      display: flex;
+      gap: 0.6rem;
+      padding: 0.65rem 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input[type="checkbox"] {
+      margin-top: 0.5rem;
+      accent-color: var(--accent);
+      flex: 0 0 auto;
+      transform: scale(1.15);
+    }
+    .checklist-item-main { flex: 1; }
+    .checklist-label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+    .checklist-item textarea {
+      width: 100%;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 38px;
+    }
+    .checklist-item textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* ---------- Medication schedule ---------- */
+    .med-row {
+      display: grid;
+      grid-template-columns: 2fr 1.3fr 1fr auto;
+      gap: 0.5rem;
+      align-items: end;
+      margin-bottom: 0.6rem;
+    }
+    @media (max-width: 640px) {
+      .med-row { grid-template-columns: 1fr 1fr; }
+      .med-row .field:nth-child(1) { grid-column: span 2; }
+      .med-row button { grid-column: span 2; }
+    }
+    .med-schedule-out {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 0.95rem;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 0.88rem;
+      white-space: pre-wrap;
+      margin-top: 0.5rem;
+      min-height: 1.5rem;
+      color: var(--text);
+    }
+
+    /* ---------- Sleep cycles ---------- */
+    .sleep-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .sleep-option {
+      padding: 0.75rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .sleep-option .time {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+    .sleep-option .cycles {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .sleep-option.recommended {
+      border-color: var(--accent);
+      background: var(--accent-softer);
+    }
+
+    /* ---------- Footer ---------- */
+    footer.site-footer {
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    footer.site-footer a { color: var(--text-dim); }
+
+    @media print {
+      body { background: white; color: black; }
+      nav.tabs, .no-print, .btn, button { display: none !important; }
+      .panel { display: block !important; }
+      .card, .calc, .table-wrap {
+        border: 1px solid #ccc;
+        background: white;
+        color: black;
+        break-inside: avoid;
+      }
+      a { color: black; text-decoration: underline; }
+    }
+
+    /* ---------- Accessibility ---------- */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-    <div id="disclaimer-modal" class="modal">
-        <div class="modal-content">
-            <h2>⚕️ Important Medical Disclaimer</h2>
-            <p>This application provides general medical resources and information only. It does NOT provide medical advice, diagnosis, or treatment.</p>
-            <p><strong>Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</strong></p>
-            <p>If you think you may have a medical emergency, call your doctor, go to the emergency department, or call 911 immediately.</p>
-            <button id="accept-disclaimer" class="btn-primary">I Understand</button>
-        </div>
-    </div>
-
-    <header>
-        <div class="container">
-            <h1>🏥 Medical Resources Guide</h1>
-            <p class="tagline">Your gateway to healthcare information and services</p>
-        </div>
+  <div class="app">
+    <header class="site-header">
+      <h1 class="title"><span class="ico">🩺</span> Doctor</h1>
+      <p class="subtitle">Healthcare Resources &amp; Wellness Tools</p>
     </header>
 
-    <nav>
-        <div class="container">
-            <ul class="nav-links">
-                <li><a href="#insurance">Health Insurance</a></li>
-                <li><a href="#direct-care">Direct Care</a></li>
-                <li><a href="#emergency">Emergency</a></li>
-                <li><a href="#preventive">Preventive Care</a></li>
-                <li><a href="#mental-health">Mental Health</a></li>
-                <li><a href="#prescriptions">Prescriptions</a></li>
-            </ul>
-        </div>
+    <div class="disclaimer" role="note">
+      <strong>⚠️ Important:</strong> This app provides general health information only. It is not medical advice. Always consult a qualified healthcare provider.
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" aria-selected="true"  aria-controls="panel-resources"   id="tab-resources"   data-tab="resources">Resources</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-calculators" id="tab-calculators" data-tab="calculators">Calculators</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-reference"   id="tab-reference"   data-tab="reference">Reference</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-wellness"    id="tab-wellness"    data-tab="wellness">Wellness</button>
     </nav>
 
-    <main class="container">
-        <div class="search-section">
-            <input type="text" id="search-input" placeholder="Search resources..." aria-label="Search resources">
-        </div>
+    <!-- ============ RESOURCES ============ -->
+    <section class="panel active" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources">
+      <h2 class="section-title"><span class="ico">🏥</span> Insurance &amp; Coverage</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🛡️</span><h3 class="card-title">Healthcare.gov Marketplace</h3></div>
+          <p class="card-desc">Federal health-insurance marketplace for individual and family plans. Compare plans, check eligibility for subsidies, and enroll during Open Enrollment or after a qualifying life event.</p>
+          <a class="card-link" href="https://www.healthcare.gov/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🏛️</span><h3 class="card-title">Medicare.gov</h3></div>
+          <p class="card-desc">Official federal program for people 65+ and some younger people with disabilities. Explore Parts A, B, C (Advantage), and D; find plans; manage your account.</p>
+          <a class="card-link" href="https://www.medicare.gov/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🤝</span><h3 class="card-title">Medicaid Overview</h3></div>
+          <p class="card-desc">Joint federal-state program providing coverage for low-income adults, children, pregnant people, seniors, and people with disabilities. Eligibility and benefits vary by state.</p>
+          <a class="card-link" href="https://www.medicaid.gov/medicaid/index.html" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🔄</span><h3 class="card-title">COBRA Continuation Coverage</h3></div>
+          <p class="card-desc">Department of Labor guide to COBRA, which lets you keep employer-sponsored coverage for a limited time after job loss, reduced hours, or other qualifying events.</p>
+          <a class="card-link" href="https://www.dol.gov/general/topic/health-plans/cobra" target="_blank" rel="noopener">Visit →</a>
+        </article>
+      </div>
+      <div class="mini-disclaimer">For educational purposes only. This app is not affiliated with any government agency or insurer.</div>
 
-        <section id="insurance" class="resource-section">
-            <h2>Health Insurance Resources</h2>
-            <div class="resource-grid">
-                <div class="resource-card">
-                    <h3>Healthcare.gov</h3>
-                    <p>Official health insurance marketplace for comprehensive coverage options.</p>
-                    <a href="https://www.healthcare.gov" class="resource-link" target="_blank">Visit Healthcare.gov →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>Medicare</h3>
-                    <p>Federal health insurance for people 65 or older and certain younger people with disabilities.</p>
-                    <a href="https://www.medicare.gov" class="resource-link" target="_blank">Visit Medicare.gov →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>Medicaid</h3>
-                    <p>Joint federal and state program providing health coverage to eligible low-income individuals.</p>
-                    <a href="https://www.medicaid.gov" class="resource-link" target="_blank">Visit Medicaid.gov →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>State Health Insurance Assistance</h3>
-                    <p>Free health insurance counseling service for Medicare beneficiaries and their families.</p>
-                    <a href="https://www.shiphelp.org" class="resource-link" target="_blank">Find SHIP Services →</a>
-                </div>
-            </div>
-        </section>
+      <h2 class="section-title"><span class="ico">👨‍⚕️</span> Direct Primary Care</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><span class="card-ico">📖</span><h3 class="card-title">What Is Direct Primary Care?</h3></div>
+          <p class="card-desc">DPC is a membership-based model where patients pay a flat monthly fee directly to their primary-care practice for routine care — no insurance middleman for visits, and typically longer appointments.</p>
+          <a class="card-link" href="https://www.aafp.org/family-physician/practice-and-career/delivery-payment-models/direct-primary-care.html" target="_blank" rel="noopener">AAFP overview →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🗺️</span><h3 class="card-title">DPC Frontier Mapper</h3></div>
+          <p class="card-desc">Searchable, community-maintained directory of direct primary-care practices across the United States. Filter by location, fees, and services offered.</p>
+          <a class="card-link" href="https://mapper.dpcfrontier.com/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">⚖️</span><h3 class="card-title">DPC vs. Traditional Insurance</h3></div>
+          <p class="card-desc">DPC typically pairs with a high-deductible catastrophic plan. Benefits include predictable pricing, direct access to your physician, and more time per visit; it does not replace hospital or specialty coverage.</p>
+          <a class="card-link" href="https://www.dpcare.org/what-is-dpc" target="_blank" rel="noopener">DPC Coalition →</a>
+        </article>
+      </div>
+      <div class="mini-disclaimer">DPC is not a substitute for comprehensive insurance coverage.</div>
 
-        <section id="direct-care" class="resource-section">
-            <h2>Direct Primary Care</h2>
-            <div class="resource-grid">
-                <div class="resource-card featured">
-                    <h3>Boulder Valley Direct Primary Care</h3>
-                    <p>Colorado-based direct primary care practice offering personalized, accessible healthcare without insurance hassles.</p>
-                    <a href="https://www.bouldervalleydpc.com" class="resource-link" target="_blank">Visit Boulder Valley DPC →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>DPC Frontier</h3>
-                    <p>Find direct primary care physicians near you with this comprehensive directory.</p>
-                    <a href="https://www.dpcfrontier.com" class="resource-link" target="_blank">Find DPC Providers →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>What is Direct Primary Care?</h3>
-                    <p>Learn about the DPC model - a healthcare approach that eliminates insurance billing for primary care services.</p>
-                    <a href="https://www.dpcare.org" class="resource-link" target="_blank">Learn About DPC →</a>
-                </div>
-            </div>
-        </section>
+      <h2 class="section-title"><span class="ico">🚨</span> Emergency Services</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🆘</span><h3 class="card-title">911 — Emergencies</h3></div>
+          <p class="card-desc">For any life-threatening emergency — severe bleeding, chest pain, stroke symptoms, unconsciousness, serious injury — call 911 immediately. Do not drive yourself if seriously ill.</p>
+          <a class="card-link emergency-call" href="tel:911">📞 Call 911</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">💬</span><h3 class="card-title">988 Suicide &amp; Crisis Lifeline</h3></div>
+          <p class="card-desc">Free, confidential, 24/7 support for people in suicidal crisis or emotional distress. Call or text 988 — services available in English and Spanish, with interpreters for other languages.</p>
+          <a class="card-link emergency-call" href="tel:988">📞 Call or text 988</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">☠️</span><h3 class="card-title">Poison Control</h3></div>
+          <p class="card-desc">24/7 expert advice for known or suspected poisoning, medication overdose, or exposure to toxic substances. Free, confidential, and staffed by medical professionals.</p>
+          <a class="card-link emergency-call" href="tel:18002221222">📞 1-800-222-1222</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🏥</span><h3 class="card-title">Find Your Nearest ER</h3></div>
+          <p class="card-desc">Use the American Hospital Association's hospital finder or search "emergency room near me" in your maps app. In a true emergency, 911 responders can route you to the closest appropriate facility.</p>
+          <a class="card-link" href="https://www.ahadata.com/aha-hospital-finder" target="_blank" rel="noopener">AHA Hospital Finder →</a>
+        </article>
+      </div>
 
-        <section id="emergency" class="resource-section">
-            <h2>Emergency Resources</h2>
-            <div class="resource-grid">
-                <div class="resource-card emergency-card">
-                    <h3>🚨 Call 911</h3>
-                    <p>For life-threatening emergencies including chest pain, difficulty breathing, severe bleeding, or loss of consciousness.</p>
-                    <span class="emergency-number">Emergency: 911</span>
-                </div>
-                <div class="resource-card">
-                    <h3>Poison Control</h3>
-                    <p>24/7 expert help for poison emergencies and questions about poisons.</p>
-                    <a href="https://www.poison.org" class="resource-link" target="_blank">Visit Poison.org →</a>
-                    <span class="phone-number">1-800-222-1222</span>
-                </div>
-                <div class="resource-card">
-                    <h3>Urgent Care Association</h3>
-                    <p>Find urgent care centers near you for non-emergency medical needs.</p>
-                    <a href="https://www.ucaoa.org" class="resource-link" target="_blank">Find Urgent Care →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>ER or Urgent Care?</h3>
-                    <p>Learn when to visit the emergency room versus urgent care to get appropriate care quickly.</p>
-                    <a href="https://www.cdc.gov/medicalsafety/adult-outpatient.html" class="resource-link" target="_blank">CDC Guidelines →</a>
-                </div>
-            </div>
-        </section>
+      <h2 class="section-title"><span class="ico">💉</span> Preventive Care</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><span class="card-ico">📅</span><h3 class="card-title">CDC Vaccination Schedules</h3></div>
+          <p class="card-desc">Official immunization schedules for children, adolescents, and adults. Includes catch-up recommendations and travel-specific vaccines. Updated annually by the CDC's ACIP.</p>
+          <a class="card-link" href="https://www.cdc.gov/vaccines/schedules/index.html" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🔎</span><h3 class="card-title">USPSTF Screening Recommendations</h3></div>
+          <p class="card-desc">Evidence-based preventive-services recommendations from the U.S. Preventive Services Task Force. Grade A and B services are generally covered without cost-sharing under the ACA.</p>
+          <a class="card-link" href="https://www.uspreventiveservicestaskforce.org/uspstf/recommendation-topics" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">✅</span><h3 class="card-title">Annual Physical Checklist</h3></div>
+          <p class="card-desc">MedlinePlus guide on what to expect during a routine adult wellness visit — history, vitals, age-appropriate screenings, immunizations, and preventive counseling.</p>
+          <a class="card-link" href="https://medlineplus.gov/ency/article/002125.htm" target="_blank" rel="noopener">MedlinePlus →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🦷</span><h3 class="card-title">Dental Care Guidelines</h3></div>
+          <p class="card-desc">American Dental Association recommendations for brushing, flossing, and routine dental visits. Most people benefit from a cleaning and exam every 6 months.</p>
+          <a class="card-link" href="https://www.mouthhealthy.org/" target="_blank" rel="noopener">MouthHealthy (ADA) →</a>
+        </article>
+      </div>
 
-        <section id="preventive" class="resource-section">
-            <h2>Preventive Care</h2>
-            <div class="resource-grid">
-                <div class="resource-card">
-                    <h3>CDC Prevention Guidelines</h3>
-                    <p>Evidence-based preventive care guidelines and recommendations from the CDC.</p>
-                    <a href="https://www.cdc.gov/prevention" class="resource-link" target="_blank">Visit CDC Prevention →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>Vaccination Schedules</h3>
-                    <p>Recommended immunization schedules for children, adolescents, and adults.</p>
-                    <a href="https://www.cdc.gov/vaccines/schedules" class="resource-link" target="_blank">View Schedules →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>Health Screenings</h3>
-                    <p>Learn about recommended health screenings based on age and risk factors.</p>
-                    <a href="https://www.uspreventiveservicestaskforce.org" class="resource-link" target="_blank">USPSTF Guidelines →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>MyHealthfinder</h3>
-                    <p>Get personalized recommendations for screenings, checkups, and preventive care.</p>
-                    <a href="https://health.gov/myhealthfinder" class="resource-link" target="_blank">Get Recommendations →</a>
-                </div>
-            </div>
-        </section>
+      <h2 class="section-title"><span class="ico">🧠</span> Mental Health</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><span class="card-ico">💬</span><h3 class="card-title">988 Suicide &amp; Crisis Lifeline</h3></div>
+          <p class="card-desc">Confidential, 24/7 support for anyone in emotional distress or suicidal crisis. Specialized lines for veterans, Spanish speakers, and LGBTQ+ youth.</p>
+          <a class="card-link emergency-call" href="tel:988">📞 Call or text 988</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">📞</span><h3 class="card-title">SAMHSA National Helpline</h3></div>
+          <p class="card-desc">Free, confidential, 24/7/365 treatment referral and information service for individuals and families facing mental and/or substance-use disorders.</p>
+          <a class="card-link emergency-call" href="tel:18006624357">📞 1-800-662-4357</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🤗</span><h3 class="card-title">NAMI</h3></div>
+          <p class="card-desc">The National Alliance on Mental Illness — education, peer support, and advocacy. NAMI HelpLine at 1-800-950-6264 (or text "HelpLine" to 62640), M–F 10am–10pm ET.</p>
+          <a class="card-link" href="https://www.nami.org/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🔎</span><h3 class="card-title">Psychology Today Therapist Finder</h3></div>
+          <p class="card-desc">Search therapists, psychiatrists, and treatment centers by location, specialty, insurance, and more. Profiles include credentials and approaches.</p>
+          <a class="card-link" href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">✉️</span><h3 class="card-title">Crisis Text Line</h3></div>
+          <p class="card-desc">Free, 24/7 text-based crisis support with a trained volunteer Crisis Counselor. Text HOME to 741741 (US &amp; Canada) or 85258 in the UK.</p>
+          <a class="card-link" href="https://www.crisistextline.org/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+      </div>
 
-        <section id="mental-health" class="resource-section">
-            <h2>Mental Health Resources</h2>
-            <div class="resource-grid">
-                <div class="resource-card">
-                    <h3>SAMHSA National Helpline</h3>
-                    <p>Free, confidential, 24/7 treatment referral and information service for mental health and substance use disorders.</p>
-                    <a href="https://www.samhsa.gov/find-help/national-helpline" class="resource-link" target="_blank">Visit SAMHSA →</a>
-                    <span class="phone-number">1-800-662-4357</span>
-                </div>
-                <div class="resource-card">
-                    <h3>Crisis Text Line</h3>
-                    <p>Free, 24/7 support for those in crisis. Text with a trained crisis counselor.</p>
-                    <a href="https://www.crisistextline.org" class="resource-link" target="_blank">Visit Crisis Text Line →</a>
-                    <span class="phone-number">Text HOME to 741741</span>
-                </div>
-                <div class="resource-card">
-                    <h3>988 Suicide & Crisis Lifeline</h3>
-                    <p>24/7 free and confidential support for people in distress and crisis resources.</p>
-                    <a href="https://988lifeline.org" class="resource-link" target="_blank">Visit 988 Lifeline →</a>
-                    <span class="phone-number">Call or text 988</span>
-                </div>
-                <div class="resource-card">
-                    <h3>Psychology Today</h3>
-                    <p>Find therapists, psychiatrists, support groups, and treatment facilities near you.</p>
-                    <a href="https://www.psychologytoday.com" class="resource-link" target="_blank">Find Providers →</a>
-                </div>
-            </div>
-        </section>
+      <h2 class="section-title"><span class="ico">💊</span> Prescription Assistance</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><span class="card-ico">🏷️</span><h3 class="card-title">GoodRx</h3></div>
+          <p class="card-desc">Free coupons and price comparisons for prescription drugs at most U.S. pharmacies. Often significantly lower than cash price and sometimes beats insurance copays.</p>
+          <a class="card-link" href="https://www.goodrx.com/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">💡</span><h3 class="card-title">NeedyMeds</h3></div>
+          <p class="card-desc">Nonprofit database of patient-assistance programs, free and low-cost clinics, and coupons. Search by medication, diagnosis, or ZIP code.</p>
+          <a class="card-link" href="https://www.needymeds.org/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">📋</span><h3 class="card-title">RxAssist</h3></div>
+          <p class="card-desc">Comprehensive directory of manufacturer patient-assistance programs (PAPs) that provide free or low-cost brand-name medications to eligible patients.</p>
+          <a class="card-link" href="https://www.rxassist.org/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="card-ico">💰</span><h3 class="card-title">Mark Cuban Cost Plus Drugs</h3></div>
+          <p class="card-desc">Transparent-pricing online pharmacy — manufacturer cost + 15% markup + pharmacy fee + shipping. Often dramatically lower than retail pharmacy pricing on generics.</p>
+          <a class="card-link" href="https://costplusdrugs.com/" target="_blank" rel="noopener">Visit →</a>
+        </article>
+      </div>
+      <div class="mini-disclaimer">External sites are not affiliated with or endorsed by this app. Always verify pricing, eligibility, and pharmacy credentials before use.</div>
+    </section>
 
-        <section id="prescriptions" class="resource-section">
-            <h2>Prescription Assistance</h2>
-            <div class="resource-grid">
-                <div class="resource-card">
-                    <h3>GoodRx</h3>
-                    <p>Compare prescription drug prices and find coupons at over 70,000 US pharmacies.</p>
-                    <a href="https://www.goodrx.com" class="resource-link" target="_blank">Visit GoodRx →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>NeedyMeds</h3>
-                    <p>Information on patient assistance programs, free/low-cost clinics, and drug discount cards.</p>
-                    <a href="https://www.needymeds.org" class="resource-link" target="_blank">Visit NeedyMeds →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>RxAssist</h3>
-                    <p>Comprehensive database of patient assistance programs run by pharmaceutical companies.</p>
-                    <a href="https://www.rxassist.org" class="resource-link" target="_blank">Visit RxAssist →</a>
-                </div>
-                <div class="resource-card">
-                    <h3>Medicare Extra Help</h3>
-                    <p>Program to help people with limited income pay Medicare prescription drug costs.</p>
-                    <a href="https://www.ssa.gov/medicare/part-d-extra-help" class="resource-link" target="_blank">Learn About Extra Help →</a>
-                </div>
-            </div>
-        </section>
+    <!-- ============ CALCULATORS ============ -->
+    <section class="panel" id="panel-calculators" role="tabpanel" aria-labelledby="tab-calculators">
+      <div class="disclaimer">
+        <strong>⚠️ Educational use only.</strong> These calculators are general screening tools. They do not diagnose conditions or replace professional medical evaluation.
+      </div>
+      <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Health calculators land in the next phase.</p>
+    </section>
 
-        <section class="disclaimer-section">
-            <h2>Remember</h2>
-            <p>This application is for informational purposes only and does not provide medical advice. Always consult with qualified healthcare professionals for medical concerns.</p>
-        </section>
-    </main>
+    <!-- ============ REFERENCE ============ -->
+    <section class="panel" id="panel-reference" role="tabpanel" aria-labelledby="tab-reference">
+      <div class="disclaimer">
+        <strong>⚠️ Educational use only.</strong> Reference values are general guidance. Interpret with your healthcare provider, who knows your full clinical picture.
+      </div>
+      <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Quick-reference guides land in the next phase.</p>
+    </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Medical Resources Guide | Not a substitute for professional medical advice</p>
-        </div>
+    <!-- ============ WELLNESS ============ -->
+    <section class="panel" id="panel-wellness" role="tabpanel" aria-labelledby="tab-wellness">
+      <div class="disclaimer">
+        <strong>⚠️ Educational use only.</strong> Wellness tools support self-care but do not replace medical, psychiatric, or therapeutic treatment.
+      </div>
+      <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Wellness tools land in the next phase.</p>
+    </section>
+
+    <footer class="site-footer">
+      <p>Doctor — open source under the MIT License · <a href="https://github.com/GuildMasterDev/Doctor" target="_blank" rel="noopener">GitHub</a></p>
+      <p style="margin-top: 0.25rem;">Not a medical device. No data leaves your browser.</p>
     </footer>
+  </div>
 
-    <script src="renderer.js"></script>
+  <script>
+    // ---------- Tabs ----------
+    (function () {
+      const tabs   = document.querySelectorAll('nav.tabs button[role="tab"]');
+      const panels = document.querySelectorAll('.panel');
+      function activate(name) {
+        tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab === name ? 'true' : 'false'));
+        panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+        try { history.replaceState(null, '', '#' + name); } catch (_) {}
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+      tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
+      const hash = (location.hash || '').replace('#', '');
+      if (['resources', 'calculators', 'reference', 'wellness'].includes(hash)) activate(hash);
+    })();
+  </script>
 </body>
 </html>
