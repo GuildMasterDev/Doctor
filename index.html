@@ -483,8 +483,11 @@
       font-size: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      white-space: pre-line;
+      text-align: center;
       transition: transform 1s ease, background 1s ease;
       box-shadow: 0 0 60px rgba(78, 205, 196, 0.35);
+      user-select: none;
     }
     .breath-stats {
       display: flex;
@@ -1212,7 +1215,75 @@
       <div class="disclaimer">
         <strong>⚠️ Educational use only.</strong> Wellness tools support self-care but do not replace medical, psychiatric, or therapeutic treatment.
       </div>
-      <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Wellness tools land in the next phase.</p>
+
+      <!-- Appointment prep -->
+      <div class="calc" id="appt-prep">
+        <h3><span>📋</span> Appointment Prep Checklist</h3>
+        <p style="color:var(--text-dim);font-size:0.9rem;margin:0 0 0.75rem;">Fill in what you want to bring up, then print or copy for your visit. Nothing is saved unless you copy/print it.</p>
+        <div id="appt-items"></div>
+        <div class="btn-row no-print">
+          <button class="btn" id="appt-print">🖨 Print</button>
+          <button class="btn btn-ghost" id="appt-copy">📋 Copy as text</button>
+          <button class="btn btn-ghost" id="appt-reset">↺ Reset</button>
+        </div>
+        <div class="mini-disclaimer">Your notes stay in this browser until you copy, print, or leave the page. Nothing is uploaded.</div>
+      </div>
+
+      <!-- Symptom Journal -->
+      <div class="calc" id="journal">
+        <h3><span>📝</span> Symptom Journal</h3>
+        <div class="field-group">
+          <div class="field">
+            <label for="j-date">Date</label>
+            <input id="j-date" type="date">
+          </div>
+          <div class="field">
+            <label for="j-time">Time</label>
+            <input id="j-time" type="time">
+          </div>
+          <div class="field" style="grid-column: span 2;">
+            <label for="j-symptom">Symptom</label>
+            <input id="j-symptom" type="text" placeholder="e.g., Headache, back pain, fatigue">
+          </div>
+          <div class="field" style="grid-column: span 2;">
+            <label for="j-sev">Severity: <span id="j-sev-label">5</span>/10</label>
+            <input id="j-sev" type="range" min="1" max="10" step="1" value="5">
+          </div>
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="j-notes">Notes (triggers, meds taken, duration…)</label>
+            <textarea id="j-notes" rows="2" placeholder="What were you doing? What helped or made it worse?"></textarea>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="j-save">+ Add entry</button>
+          <button class="btn btn-ghost" id="j-export">⬇ Export CSV</button>
+          <button class="btn btn-danger" id="j-clear">Clear all</button>
+        </div>
+        <h4 style="margin:1.1rem 0 0.4rem;font-size:0.88rem;color:var(--text-dim);font-weight:500;text-transform:uppercase;letter-spacing:0.04em;">
+          Past entries (<span id="j-count">0</span>)
+        </h4>
+        <div class="journal-list" id="j-list" aria-live="polite"></div>
+        <div class="mini-disclaimer">Entries are saved in this browser's localStorage. They never leave your device unless you export them. Clearing browser data will delete them.</div>
+      </div>
+
+      <!-- Breathing -->
+      <div class="calc" id="breath">
+        <h3><span>🌬️</span> 4-7-8 Breathing Exercise</h3>
+        <p style="color:var(--text-dim);font-size:0.9rem;margin:0 0 0.5rem;">Dr. Andrew Weil's 4-7-8 pattern: inhale 4 s, hold 7 s, exhale 8 s. A gentle relaxation technique — not a substitute for treatment of anxiety or breathing disorders.</p>
+        <div class="breath-stage">
+          <div class="breath-circle" id="breath-circle">Ready</div>
+          <div class="breath-stats">
+            <div><strong id="breath-cycle">0</strong>Cycles</div>
+            <div><strong id="breath-phase">—</strong>Phase</div>
+            <div><strong id="breath-sec">0</strong>Seconds</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn" id="breath-toggle">Start</button>
+            <button class="btn btn-ghost" id="breath-reset">Reset</button>
+          </div>
+        </div>
+        <div class="mini-disclaimer">If you feel lightheaded, stop and breathe normally. People with respiratory or cardiovascular conditions should check with their provider before practicing paced breathing.</div>
+      </div>
     </section>
 
     <footer class="site-footer">
@@ -1567,6 +1638,268 @@
 
       // Seed with one row
       addRow({ name: '', freq: '1x', start: '08:00' });
+    })();
+
+    // ---------- Appointment Prep Checklist ----------
+    (function () {
+      const root = $('#appt-prep');
+      if (!root) return;
+      const container = $('#appt-items', root);
+      const ITEMS = [
+        { id: 'reason',     label: 'Reason for this visit',         placeholder: 'e.g., Annual physical, follow-up on BP, new symptom' },
+        { id: 'symptoms',   label: 'Symptoms to discuss',           placeholder: 'When they started, what makes them better/worse, severity' },
+        { id: 'questions',  label: 'Questions for the doctor',      placeholder: 'One question per line' },
+        { id: 'meds',       label: 'Current medications',           placeholder: 'Name, dose, frequency — include OTC, supplements, vitamins' },
+        { id: 'allergies',  label: 'Allergies',                     placeholder: 'Drug, food, environmental; what the reaction was' },
+        { id: 'family',     label: 'Family history (new updates)',  placeholder: 'New diagnoses in parents, siblings, grandparents' },
+        { id: 'id',         label: 'Bring: photo ID',               placeholder: '', checkbox: true },
+        { id: 'insurance',  label: 'Bring: insurance card',         placeholder: '', checkbox: true },
+        { id: 'records',    label: 'Bring: recent records or test results', placeholder: '', checkbox: true },
+      ];
+
+      container.innerHTML = ITEMS.map(it => {
+        return '<div class="checklist-item">' +
+          '<input type="checkbox" aria-label="Done" data-appt-done>' +
+          '<div class="checklist-item-main">' +
+            '<label class="checklist-label">' + it.label + '</label>' +
+            (it.checkbox
+              ? ''
+              : '<textarea data-appt-id="' + it.id + '" rows="2" placeholder="' + it.placeholder + '"></textarea>'
+            ) +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      function buildText() {
+        const lines = ['=== Appointment prep — ' + new Date().toLocaleDateString() + ' ==='];
+        ITEMS.forEach((it, i) => {
+          const row = container.children[i];
+          const done = $('[data-appt-done]', row).checked;
+          const mark = it.checkbox ? (done ? '[x]' : '[ ]') : '';
+          if (it.checkbox) {
+            lines.push(mark + ' ' + it.label);
+          } else {
+            const val = ($('[data-appt-id="' + it.id + '"]', row).value || '').trim();
+            lines.push('');
+            lines.push('— ' + it.label + (done ? ' ✓' : '') + ' —');
+            lines.push(val || '(none)');
+          }
+        });
+        return lines.join('\n');
+      }
+
+      $('#appt-print').addEventListener('click', () => window.print());
+      $('#appt-copy').addEventListener('click', async () => {
+        const text = buildText();
+        try {
+          await navigator.clipboard.writeText(text);
+          const btn = $('#appt-copy'); const t = btn.textContent;
+          btn.textContent = 'Copied ✓';
+          setTimeout(() => btn.textContent = t, 1500);
+        } catch (_) {
+          const ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch (_) {}
+          ta.remove();
+        }
+      });
+      $('#appt-reset').addEventListener('click', () => {
+        $$('textarea', container).forEach(t => t.value = '');
+        $$('input[type="checkbox"]', container).forEach(c => c.checked = false);
+      });
+    })();
+
+    // ---------- Symptom Journal ----------
+    (function () {
+      const root = $('#journal');
+      if (!root) return;
+      const KEY = 'doctor.journal.v1';
+      const dateIn    = $('#j-date');
+      const timeIn    = $('#j-time');
+      const symptomIn = $('#j-symptom');
+      const sevIn     = $('#j-sev');
+      const sevLabel  = $('#j-sev-label');
+      const notesIn   = $('#j-notes');
+      const listEl    = $('#j-list');
+      const countEl   = $('#j-count');
+      const saveBtn   = $('#j-save');
+      const exportBtn = $('#j-export');
+      const clearBtn  = $('#j-clear');
+
+      function load() {
+        try {
+          const raw = localStorage.getItem(KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (_) { return []; }
+      }
+      function save(entries) {
+        try { localStorage.setItem(KEY, JSON.stringify(entries)); }
+        catch (_) { /* quota or disabled */ }
+      }
+
+      function render() {
+        const entries = load();
+        countEl.textContent = entries.length;
+        if (!entries.length) {
+          listEl.innerHTML = '<div style="padding:1rem;color:var(--text-muted);text-align:center;font-size:0.9rem;">No entries yet.</div>';
+          return;
+        }
+        entries.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+        listEl.innerHTML = entries.map(e => {
+          const sev = Number(e.severity) || 0;
+          const sevClass = sev <= 3 ? 'sev-low' : sev <= 6 ? 'sev-mid' : 'sev-high';
+          const dateStr = e.date + (e.time ? ' ' + e.time : '');
+          return '<div class="journal-entry">' +
+            '<div><strong>' + escapeHtml(e.symptom || '(no symptom)') + '</strong>' +
+              '<span class="sev ' + sevClass + '">' + sev + '/10</span>' +
+              ' <button class="btn btn-ghost" style="padding:2px 8px;font-size:0.75rem;margin-left:0.4rem;" data-del="' + e.id + '">Delete</button>' +
+            '</div>' +
+            '<div class="meta">' + escapeHtml(dateStr) + '</div>' +
+            (e.notes ? '<div style="margin-top:0.3rem;font-size:0.88rem;color:var(--text-dim);">' + escapeHtml(e.notes) + '</div>' : '') +
+          '</div>';
+        }).join('');
+
+        $$('[data-del]', listEl).forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-del');
+            save(load().filter(e => String(e.id) !== id));
+            render();
+          });
+        });
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, c => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[c]);
+      }
+
+      function nowIso() {
+        const d = new Date();
+        return { date: d.toISOString().slice(0,10), time: d.toTimeString().slice(0,5) };
+      }
+
+      sevIn.addEventListener('input', () => sevLabel.textContent = sevIn.value);
+
+      saveBtn.addEventListener('click', () => {
+        const symptom = symptomIn.value.trim();
+        if (!symptom) { symptomIn.focus(); return; }
+        const now = nowIso();
+        const entry = {
+          id: Date.now() + Math.random().toString(36).slice(2, 6),
+          ts: Date.now(),
+          date: dateIn.value || now.date,
+          time: timeIn.value || now.time,
+          symptom,
+          severity: Number(sevIn.value),
+          notes: notesIn.value.trim(),
+        };
+        const all = load(); all.push(entry); save(all);
+        // reset form
+        symptomIn.value = ''; notesIn.value = ''; sevIn.value = 5; sevLabel.textContent = '5';
+        render();
+      });
+
+      exportBtn.addEventListener('click', () => {
+        const entries = load();
+        if (!entries.length) return;
+        const header = 'date,time,symptom,severity,notes';
+        const rows = entries.map(e => {
+          const esc = v => '"' + String(v || '').replace(/"/g, '""') + '"';
+          return [e.date, e.time, e.symptom, e.severity, e.notes].map(esc).join(',');
+        });
+        const blob = new Blob([header + '\n' + rows.join('\n')], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'symptom-journal-' + new Date().toISOString().slice(0,10) + '.csv';
+        document.body.appendChild(a); a.click();
+        setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 200);
+      });
+
+      clearBtn.addEventListener('click', () => {
+        if (!load().length) return;
+        if (confirm('Delete all symptom journal entries? This cannot be undone.')) {
+          save([]); render();
+        }
+      });
+
+      // Seed today's date/time
+      const seed = nowIso();
+      dateIn.value = seed.date;
+      timeIn.value = seed.time;
+      render();
+    })();
+
+    // ---------- Breathing 4-7-8 ----------
+    (function () {
+      const root = $('#breath');
+      if (!root) return;
+      const circle  = $('#breath-circle');
+      const cycleEl = $('#breath-cycle');
+      const phaseEl = $('#breath-phase');
+      const secEl   = $('#breath-sec');
+      const toggle  = $('#breath-toggle');
+      const resetBtn = $('#breath-reset');
+
+      const PHASES = [
+        { name: 'Inhale', seconds: 4, color: 'radial-gradient(circle, #6fc2e6, #4e9dcd)', scale: 1.45 },
+        { name: 'Hold',   seconds: 7, color: 'radial-gradient(circle, #a78bfa, #8b5cf6)', scale: 1.45 },
+        { name: 'Exhale', seconds: 8, color: 'radial-gradient(circle, #4ecdc4, #3ba99f)', scale: 0.85 },
+      ];
+
+      let running = false, phaseIdx = 0, remaining = 0, cycles = 0, timer = null;
+
+      function applyPhase(p) {
+        const { name, seconds, color, scale } = PHASES[p];
+        phaseEl.textContent = name;
+        remaining = seconds;
+        secEl.textContent = remaining;
+        circle.textContent = name + '\n' + seconds + 's';
+        circle.style.background = color;
+        circle.style.transitionDuration = seconds + 's';
+        circle.style.transform = 'scale(' + scale + ')';
+      }
+
+      function tick() {
+        remaining -= 1;
+        if (remaining <= 0) {
+          phaseIdx = (phaseIdx + 1) % PHASES.length;
+          if (phaseIdx === 0) {
+            cycles += 1;
+            cycleEl.textContent = cycles;
+          }
+          applyPhase(phaseIdx);
+        } else {
+          secEl.textContent = remaining;
+          circle.textContent = PHASES[phaseIdx].name + '\n' + remaining + 's';
+        }
+      }
+
+      function start() {
+        running = true;
+        toggle.textContent = 'Pause';
+        phaseIdx = 0;
+        applyPhase(phaseIdx);
+        timer = setInterval(tick, 1000);
+      }
+      function stop() {
+        running = false;
+        toggle.textContent = 'Start';
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+      function reset() {
+        stop();
+        cycles = 0; cycleEl.textContent = '0';
+        phaseEl.textContent = '—'; secEl.textContent = '0';
+        circle.textContent = 'Ready';
+        circle.style.transform = 'scale(1)';
+        circle.style.background = 'radial-gradient(circle, var(--accent), var(--accent-dim))';
+        circle.style.transitionDuration = '1s';
+      }
+
+      toggle.addEventListener('click', () => running ? stop() : start());
+      resetBtn.addEventListener('click', reset);
+      window.addEventListener('beforeunload', () => { if (timer) clearInterval(timer); });
     })();
   </script>
 </body>
