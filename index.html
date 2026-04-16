@@ -8,6 +8,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Doctor">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="mask-icon" href="icons/icon.svg" color="#4ecdc4">
   <title>Doctor — Healthcare Resources & Wellness Tools</title>
   <style>
     :root {
@@ -1900,6 +1905,15 @@
       toggle.addEventListener('click', () => running ? stop() : start());
       resetBtn.addEventListener('click', reset);
       window.addEventListener('beforeunload', () => { if (timer) clearInterval(timer); });
+    })();
+
+    // ---------- Service worker registration ----------
+    (function () {
+      if (!('serviceWorker' in navigator)) return;
+      if (location.protocol === 'file:') return; // Electron / local file mode
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => { /* ignore */ });
+      });
     })();
   </script>
 </body>
